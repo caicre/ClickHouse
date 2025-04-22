@@ -51,14 +51,13 @@ public:
     ~SentryWriter();
 
 private:
-    static std::unique_ptr<SentryWriter> instance;
+    explicit SentryWriter(Poco::Util::LayeredConfiguration & config);
+
 #if USE_SENTRY
+    static std::unique_ptr<SentryWriter> instance;
     bool initialized = false;
     bool anonymize = false;
-#endif
     std::string server_data_path;
-
-    explicit SentryWriter(Poco::Util::LayeredConfiguration & config);
 
     enum Type
     {
@@ -75,4 +74,5 @@ private:
         const FramePointers & frame_pointers,
         size_t offset,
         size_t size);
+#endif
 };
