@@ -31,7 +31,8 @@ GRANT SHOW ON database_03400.* TO 'user_test_03400';
 REVOKE ALL ON database_03400.no_show_allowed FROM 'user_test_03400';
 GRANT SELECT ON database_03400.allowed TO 'user_test_03400';
 GRANT SELECT(a) ON database_03400.partial_allowed TO 'user_test_03400';
-GRANT SELECT ON database_03400.merge* TO 'user_test_03400';
+GRANT SELECT ON database_03400.merge TO 'user_test_03400';
+GRANT SELECT ON database_03400.merge_user TO 'user_test_03400';
 """
 
 echo "----Table engine"
