@@ -520,10 +520,9 @@ QueryPipeline InterpreterInsertQuery::addInsertToSelectPipeline(ASTInsertQuery &
         });
     }
 
-    bool skip_destination_table = no_destination;
     auto insert_dependencies = InsertDependenciesBuilder::create(
         table, query_ptr, query_sample_block,
-        async_insert, skip_destination_table, allow_materialized,
+        async_insert, /*skip_destination_table*/ no_destination, allow_materialized,
         getContext());
 
     size_t sink_streams_size = table->supportsParallelInsert() ? max_insert_threads : 1;
@@ -649,10 +648,9 @@ QueryPipeline InterpreterInsertQuery::buildInsertPipeline(ASTInsertQuery & query
 
     // when insert is initiated from FileLog or similar storages
     // they are allowed to expose its virtuals columns to the dependent views
-    bool skip_destination_table = no_destination;
     auto insert_dependencies = InsertDependenciesBuilder::create(
         table, query_ptr, query_sample_block,
-        async_insert, skip_destination_table, allow_materialized,
+        async_insert, /*skip_destination_table*/ no_destination, allow_materialized,
         getContext());
 
     Chain chain = insert_dependencies->createChainWithDependencies();
