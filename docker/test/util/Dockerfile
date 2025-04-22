@@ -80,5 +80,13 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/cache/debconf /tmp/*
 
-COPY --from=clickhouse/cctools:13cfebfd8f1bbc65ab49 /opt/gdb /opt/gdb
+COPY --from=clickhouse/cctools:a0b654d08b8d0b2c71ac /opt/gdb /opt/gdb
 ENV PATH="/opt/gdb/bin:${PATH}"
+
+COPY --from=clickhouse/cctools:a0b654d08b8d0b2c71ac \
+  /opt/openssl-fips/ssl/openssl.cnf \
+  /opt/openssl-fips/ssl/fipsmodule.cnf \
+  /etc/ssl/
+COPY --from=clickhouse/cctools:a0b654d08b8d0b2c71ac \
+  /opt/openssl-fips/lib64/ossl-modules/fips.so \
+  /usr/lib/x86_64-linux-gnu/ossl-modules/

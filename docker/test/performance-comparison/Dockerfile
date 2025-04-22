@@ -47,7 +47,7 @@ RUN mkdir /fg && cd /fg \
 
 COPY run.sh /
 
-COPY --from=clickhouse/cctools:13cfebfd8f1bbc65ab49 /opt/gdb /opt/gdb
+COPY --from=clickhouse/cctools:a0b654d08b8d0b2c71ac /opt/gdb /opt/gdb
 ENV PATH="/opt/gdb/bin:${PATH}"
 
 CMD ["bash", "/run.sh"]
