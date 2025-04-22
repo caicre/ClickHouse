@@ -10,6 +10,8 @@ if(NOT ENABLE_SSL)
   return()
 endif()
 
+find_package(Perl REQUIRED)
+
 # Below build description was generated from these steps:
 # - Checkout OpenSSL in the desired version (e.g. 3.2)
 # - Take a brief look (but not too long to save your mental sanity) at the supported build options (*)
@@ -117,7 +119,7 @@ if(ARCH_AMD64)
             execute_process(COMMAND sh -c "mkdir -p $(dirname ${FILE_OUT})")
             # Manually set $CC because the called Perl scripts require it.
             add_custom_command(OUTPUT ${FILE_OUT}
-                COMMAND ${CMAKE_COMMAND} -E env "CC=${CMAKE_CXX_COMPILER}" /usr/bin/env perl ${FILE_IN} ${FILE_OUT})
+                COMMAND ${CMAKE_COMMAND} -E env "CC=${CMAKE_CXX_COMPILER}" ${PERL_EXECUTABLE} ${FILE_IN} ${FILE_OUT})
         endmacro()
 
         perl_generate_asm(${OPENSSL_SOURCE_DIR}/crypto/aes/asm/aes-x86_64.pl ${OPENSSL_BINARY_DIR}/crypto/aes/aes-x86_64.s)
@@ -161,7 +163,7 @@ elseif(ARCH_AARCH64)
     else()
         macro(perl_generate_asm FILE_IN FILE_OUT)
             add_custom_command(OUTPUT ${FILE_OUT}
-                COMMAND ${CMAKE_COMMAND} -E env "CC=${CMAKE_CXX_COMPILER}" /usr/bin/env perl ${FILE_IN} "linux64" ${FILE_OUT})
+                COMMAND ${CMAKE_COMMAND} -E env "CC=${CMAKE_CXX_COMPILER}" ${PERL_EXECUTABLE} ${FILE_IN} "linux64" ${FILE_OUT})
         endmacro()
 
         perl_generate_asm(${OPENSSL_SOURCE_DIR}/crypto/aes/asm/aesv8-armx.pl ${OPENSSL_BINARY_DIR}/crypto/aes/aesv8-armx.S)
@@ -190,7 +192,7 @@ elseif(ARCH_AARCH64)
 elseif(ARCH_PPC64LE)
     macro(perl_generate_asm FILE_IN FILE_OUT)
         add_custom_command(OUTPUT ${FILE_OUT}
-            COMMAND ${CMAKE_COMMAND} -E env "CC=${CMAKE_CXX_COMPILER}" /usr/bin/env perl ${FILE_IN} "linux64v2" ${FILE_OUT})
+            COMMAND ${CMAKE_COMMAND} -E env "CC=${CMAKE_CXX_COMPILER}" ${PERL_EXECUTABLE} ${FILE_IN} "linux64v2" ${FILE_OUT})
     endmacro()
 
     perl_generate_asm(${OPENSSL_SOURCE_DIR}/crypto/aes/asm/aesp8-ppc.pl ${OPENSSL_BINARY_DIR}/crypto/aes/aesp8-ppc.s)
@@ -200,7 +202,7 @@ elseif(ARCH_PPC64LE)
 elseif(ARCH_S390X)
     macro(perl_generate_asm FILE_IN FILE_OUT)
         add_custom_command(OUTPUT ${FILE_OUT}
-            COMMAND ${CMAKE_COMMAND} -E env "CC=${CMAKE_CXX_COMPILER}" /usr/bin/env perl ${FILE_IN} "linux64" ${FILE_OUT})
+            COMMAND ${CMAKE_COMMAND} -E env "CC=${CMAKE_CXX_COMPILER}" ${PERL_EXECUTABLE} ${FILE_IN} "linux64" ${FILE_OUT})
     endmacro()
 
     perl_generate_asm(${OPENSSL_SOURCE_DIR}/crypto/aes/asm/aes-s390x.pl ${OPENSSL_BINARY_DIR}/crypto/aes/aes-s390x.S)
@@ -211,7 +213,7 @@ elseif(ARCH_S390X)
 elseif(ARCH_RISCV64)
     macro(perl_generate_asm FILE_IN FILE_OUT)
         add_custom_command(OUTPUT ${FILE_OUT}
-            COMMAND ${CMAKE_COMMAND} -E env "CC=${CMAKE_CXX_COMPILER}" /usr/bin/env perl ${FILE_IN} "linux64" ${FILE_OUT})
+            COMMAND ${CMAKE_COMMAND} -E env "CC=${CMAKE_CXX_COMPILER}" ${PERL_EXECUTABLE} ${FILE_IN} "linux64" ${FILE_OUT})
     endmacro()
 
     perl_generate_asm(${OPENSSL_SOURCE_DIR}/crypto/riscv64cpuid.pl ${OPENSSL_BINARY_DIR}/crypto/riscv64cpuid.S)
@@ -220,7 +222,7 @@ elseif(ARCH_RISCV64)
 elseif(ARCH_LOONGARCH64)
     macro(perl_generate_asm FILE_IN FILE_OUT)
         add_custom_command(OUTPUT ${FILE_OUT}
-            COMMAND ${CMAKE_COMMAND} -E env "CC=${CMAKE_CXX_COMPILER}" /usr/bin/env perl ${FILE_IN} "linux64" ${FILE_OUT})
+            COMMAND ${CMAKE_COMMAND} -E env "CC=${CMAKE_CXX_COMPILER}" ${PERL_EXECUTABLE} ${FILE_IN} "linux64" ${FILE_OUT})
     endmacro()
 
     perl_generate_asm(${OPENSSL_SOURCE_DIR}/crypto/loongarch64cpuid.pl ${OPENSSL_BINARY_DIR}/crypto/loongarch64cpuid.S)
